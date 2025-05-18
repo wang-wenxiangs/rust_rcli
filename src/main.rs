@@ -1,5 +1,5 @@
 fn main() {
-    println!("Hello, test!");
+    println!("Hello, rust!");
 }
 
 #[test]
