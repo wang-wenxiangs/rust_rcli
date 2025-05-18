@@ -15,5 +15,7 @@ cargo add anyhow
 
 cargo add serde-json
 
+cargo add serde-yaml
+
 cargo install tokei
 ```
