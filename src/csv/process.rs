@@ -1,4 +1,4 @@
-use crate::csv::options::OutputFormat;
+use crate::csv::csvopts::OutputFormat;
 use anyhow::Result;
 use csv::Reader;
 use std::fs;

@@ -24,4 +24,6 @@ cargo install tokei
 
 ```bash
 cargo add rand
+
+cargo add zxcvbn
 ```

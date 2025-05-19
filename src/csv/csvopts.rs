@@ -1,8 +1,8 @@
-use crate::base::parser::input_file_exists;
-use crate::csv::parser::parser_format;
+use crate::base::{input_file_exists, parser_format};
 use clap::Parser;
 use std::fmt::{Display, Formatter};
 use std::str::FromStr;
+
 #[derive(Debug, Copy, Clone)]
 pub enum OutputFormat {
     Json,
@@ -10,7 +10,7 @@ pub enum OutputFormat {
 }
 
 #[derive(Debug, Parser)]
-pub struct CsvOption {
+pub struct CsvOpts {
     #[arg(short, long, value_parser = input_file_exists)]
     pub input: String,
 

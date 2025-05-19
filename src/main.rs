@@ -1,7 +1,9 @@
 mod base;
 mod csv;
-use crate::base::options::{Options, SubCommand};
-use crate::csv::process::csv_process;
+mod genpass;
+use crate::base::{Options, SubCommand};
+use crate::csv::csv_process;
+use crate::genpass::genpass_process;
 use clap::Parser;
 
 fn main() -> anyhow::Result<()> {
@@ -19,6 +21,15 @@ fn main() -> anyhow::Result<()> {
             };
             // 调用csv_process函数处理Csv文件
             csv_process(&csv_option.input, output, csv_option.format)?;
+        }
+        SubCommand::GenPass(genpass_option) => {
+            genpass_process(
+                genpass_option.length,
+                genpass_option.uppercase,
+                genpass_option.lowercase,
+                genpass_option.numbers,
+                genpass_option.symbols,
+            )?;
         }
     }
     // 返回Ok(())表示程序执行成功
