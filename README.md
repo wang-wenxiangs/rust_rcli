@@ -26,4 +26,12 @@ cargo install tokei
 cargo add rand
 
 cargo add zxcvbn
+
+```
+
+## base64
+
+```bash
+cargo add base64
+
 ```

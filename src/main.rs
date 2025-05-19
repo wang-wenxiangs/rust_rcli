@@ -1,9 +1,11 @@
 mod base;
+mod base64;
 mod csv;
 mod genpass;
 use crate::base::{Options, SubCommand};
 use crate::csv::csv_process;
 use crate::genpass::genpass_process;
+pub use base64::{Base64Opt, decode_process, encode_process};
 use clap::Parser;
 
 fn main() -> anyhow::Result<()> {
@@ -31,6 +33,14 @@ fn main() -> anyhow::Result<()> {
                 genpass_option.symbols,
             )?;
         }
+        SubCommand::Base64(base64_option) => match base64_option {
+            Base64Opt::Encode(opt) => {
+                encode_process(&opt.input, opt.format)?;
+            }
+            Base64Opt::Decode(opt) => {
+                decode_process(&opt.input, opt.format)?;
+            }
+        },
     }
     // 返回Ok(())表示程序执行成功
     Ok(())

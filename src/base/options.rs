@@ -1,6 +1,8 @@
+use crate::base64::Base64Opt;
 use crate::csv::CsvOpts;
 use crate::genpass::GenPassOpts;
 use clap::Parser;
+
 #[derive(Debug, Parser)]
 #[command(name = "rust_rcli", author, version, about, long_about = None)]
 pub struct Options {
@@ -15,4 +17,7 @@ pub enum SubCommand {
 
     #[command(name = "genpass", about = "Generate a password")]
     GenPass(GenPassOpts),
+
+    #[command(subcommand)]
+    Base64(Base64Opt),
 }
