@@ -1,12 +1,8 @@
-mod parser;
-mod process;
-use super::base::input_file_exists;
+use crate::base::parser::input_file_exists;
+use crate::csv::parser::parser_format;
 use clap::Parser;
-pub use parser::parser_format;
-pub use process::csv_process;
 use std::fmt::{Display, Formatter};
 use std::str::FromStr;
-
 #[derive(Debug, Copy, Clone)]
 pub enum OutputFormat {
     Json,

@@ -1,8 +1,9 @@
 mod base;
-mod csvoptions;
-use crate::base::{Options, SubCommand};
-use crate::csvoptions::csv_process;
+mod csv;
+use crate::base::options::{Options, SubCommand};
+use crate::csv::process::csv_process;
 use clap::Parser;
+
 fn main() -> anyhow::Result<()> {
     // 解析命令行参数
     let option = Options::parse();

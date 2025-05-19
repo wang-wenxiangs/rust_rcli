@@ -7,7 +7,7 @@ cargo add clap --features derive
 
 cargo add duckdb --features bundled
 
-cargo add csvoptions
+cargo add csv
 
 cargo add serde --features derive
 
@@ -18,4 +18,10 @@ cargo add serde-json
 cargo add serde-yaml
 
 cargo install tokei
+```
+
+## rand
+
+```bash
+cargo add rand
 ```
