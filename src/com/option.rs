@@ -1,6 +1,7 @@
 use crate::base64::Base64Opt;
-use crate::csv::CsvOpts;
-use crate::genpass::GenPassOpts;
+use crate::csv::CsvOpt;
+use crate::genpass::GenPassOpt;
+use crate::text::TextOpt;
 use clap::Parser;
 
 #[derive(Debug, Parser)]
@@ -13,11 +14,14 @@ pub struct Options {
 #[derive(Debug, Parser)]
 pub enum SubCommand {
     #[command(name = "csv", about = "Convert CSV to JSON")]
-    Csv(CsvOpts),
+    Csv(CsvOpt),
 
     #[command(name = "genpass", about = "Generate a password")]
-    GenPass(GenPassOpts),
+    GenPass(GenPassOpt),
 
     #[command(subcommand)]
     Base64(Base64Opt),
+
+    #[command(subcommand)]
+    Text(TextOpt),
 }

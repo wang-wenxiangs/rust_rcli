@@ -1,4 +1,4 @@
-mod genpassopts;
+mod genpassopt;
 mod process;
-pub use genpassopts::GenPassOpts;
+pub use genpassopt::GenPassOpt;
 pub use process::genpass_process;

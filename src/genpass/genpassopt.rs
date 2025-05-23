@@ -1,7 +1,7 @@
 use clap::Parser;
 
 #[derive(Parser, Debug, Clone, Copy)]
-pub struct GenPassOpts {
+pub struct GenPassOpt {
     #[arg(long, default_value = "16")]
     pub length: u8,
 

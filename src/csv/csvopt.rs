@@ -1,4 +1,4 @@
-use crate::base::{input_file_exists, parser_format};
+use crate::com::{input_exists, parser_format};
 use clap::Parser;
 use std::fmt::{Display, Formatter};
 use std::str::FromStr;
@@ -10,8 +10,8 @@ pub enum OutputFormat {
 }
 
 #[derive(Debug, Parser)]
-pub struct CsvOpts {
-    #[arg(short, long, value_parser = input_file_exists)]
+pub struct CsvOpt {
+    #[arg(short, long, value_parser = input_exists)]
     pub input: String,
 
     #[arg(short, long)]

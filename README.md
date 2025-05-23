@@ -35,3 +35,13 @@ cargo add zxcvbn
 cargo add base64
 
 ```
+
+## Testsign
+
+```bash
+cargo add blake3
+
+cargo add ed25519_dalek
+
+cargo add ed25519_dalek --features rand_core
+```

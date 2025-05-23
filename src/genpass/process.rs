@@ -1,4 +1,4 @@
-use rand::prelude::{IndexedRandom, SliceRandom};
+use rand::prelude::SliceRandom;
 
 const UPPERCASE: &[u8] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const LOWERCASE: &[u8] = b"abcdefghijklmnopqrstuvwxyz";
@@ -17,9 +17,9 @@ pub fn genpass_process(
     numbers: bool,
     // 是否包含符号
     symbols: bool,
-) -> anyhow::Result<()> {
+) -> anyhow::Result<(String, String)> {
     // 创建随机数生成器
-    let mut rng = rand::rng();
+    let mut rng = rand::thread_rng();
     // 创建密码的向量
     let mut password: Vec<u8> = Vec::new();
     // 创建字符的向量
@@ -63,13 +63,8 @@ pub fn genpass_process(
 
     // 将密码向量转换为字符串
     let password = String::from_utf8(password)?;
-    // 打印密码
-    println!("password: {}", password);
     // 使用zxcvbn库计算密码的强度
     let result = zxcvbn::zxcvbn(&password, &[]);
-    // 打印密码强度
-    println!("Password level: {}", result.score());
     // 返回结果
-
-    Ok(())
+    Ok((password, result.score().to_string()))
 }

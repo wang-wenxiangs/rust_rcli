@@ -1,4 +1,4 @@
-mod csvopts;
+mod csvopt;
 mod process;
-pub use csvopts::{CsvOpts, OutputFormat};
+pub use csvopt::{CsvOpt, OutputFormat};
 pub use process::csv_process;

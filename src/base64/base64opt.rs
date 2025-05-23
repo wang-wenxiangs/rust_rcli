@@ -1,4 +1,4 @@
-use crate::base::{input_file_exists, parser_base64_format};
+use crate::com::{input_exists, parser_base64_format};
 use clap::Parser;
 use std::fmt::{Display, Formatter};
 use std::str::FromStr;
@@ -14,7 +14,7 @@ pub enum Base64Opt {
 
 #[derive(Debug, Parser)]
 pub struct Base64EncodeOpt {
-    #[arg(short, long, value_parser = input_file_exists, default_value = "-")]
+    #[arg(short, long, value_parser = input_exists, default_value = "-")]
     pub input: String,
 
     #[arg(long, value_parser = parser_base64_format, default_value = "standard")]
@@ -23,7 +23,7 @@ pub struct Base64EncodeOpt {
 
 #[derive(Debug, Parser)]
 pub struct Base64DecodeOpt {
-    #[arg(short, long, value_parser = input_file_exists, default_value = "-")]
+    #[arg(short, long, value_parser = input_exists, default_value = "-")]
     pub input: String,
 
     #[arg(long, value_parser = parser_base64_format, default_value = "standard")]

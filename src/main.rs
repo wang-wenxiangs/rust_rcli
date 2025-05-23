@@ -1,12 +1,19 @@
-mod base;
 mod base64;
+mod com;
 mod csv;
 mod genpass;
-use crate::base::{Options, SubCommand};
+mod text;
+mod utils;
+
+use crate::base64::{Base64Opt, decode_process, encode_process};
+use crate::com::{Options, SubCommand};
 use crate::csv::csv_process;
 use crate::genpass::genpass_process;
-pub use base64::{Base64Opt, decode_process, encode_process};
+use crate::text::{
+    TextOpt, TextSignFormat, text_generate_process, text_sign_process, text_verify_process,
+};
 use clap::Parser;
+use std::fs;
 
 fn main() -> anyhow::Result<()> {
     // 解析命令行参数
@@ -25,20 +32,49 @@ fn main() -> anyhow::Result<()> {
             csv_process(&csv_option.input, output, csv_option.format)?;
         }
         SubCommand::GenPass(genpass_option) => {
-            genpass_process(
+            let (password, score) = genpass_process(
                 genpass_option.length,
                 genpass_option.uppercase,
                 genpass_option.lowercase,
                 genpass_option.numbers,
                 genpass_option.symbols,
             )?;
+            println!("Password: {}", password);
+            println!("Score: {}", score);
         }
         SubCommand::Base64(base64_option) => match base64_option {
             Base64Opt::Encode(opt) => {
-                encode_process(&opt.input, opt.format)?;
+                let encode = encode_process(&opt.input, opt.format)?;
+                println!("{}", encode);
             }
             Base64Opt::Decode(opt) => {
-                decode_process(&opt.input, opt.format)?;
+                let decode = decode_process(&opt.input, opt.format)?;
+                println!("{}", decode);
+            }
+        },
+        SubCommand::Text(text_option) => match text_option {
+            TextOpt::Sign(option) => {
+                let sign = text_sign_process(&option.input, &option.key, option.format)?;
+                println!("{}", sign);
+            }
+            TextOpt::Verify(option) => {
+                let verify =
+                    text_verify_process(&option.input, &option.key, option.format, &option.sign)?;
+                println!("{}", verify);
+            }
+            TextOpt::GenerateKey(option) => {
+                let key = text_generate_process(option.format)?;
+                match option.format {
+                    TextSignFormat::Blake3 => {
+                        let name = option.output.join("blake3.txt");
+                        fs::write(name, &key[0])?;
+                    }
+                    TextSignFormat::Ed25519 => {
+                        let name = &option.output;
+                        fs::write(name.join("ed25519.sk"), &key[0])?;
+                        fs::write(name.join("ed25519.pk"), &key[1])?;
+                    }
+                }
             }
         },
     }
