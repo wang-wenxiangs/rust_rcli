@@ -6,6 +6,7 @@ use log::{info, warn};
 use std::net::SocketAddr;
 use std::path::PathBuf;
 use std::sync::Arc;
+use tower_http::services::ServeDir;
 
 struct HttpServeState {
     path: PathBuf,
@@ -14,9 +15,10 @@ struct HttpServeState {
 pub async fn http_serve_process(path: PathBuf, port: u16) -> anyhow::Result<()> {
     let addr = SocketAddr::from(([0, 0, 0, 0], port));
     info!("Serving {:?} on port: {}", path, addr);
-    let state = HttpServeState { path };
+    let state = HttpServeState { path: path.clone() };
     let router = Router::new()
-        .route("/{*path}", get(index_handler))
+        .nest_service("/tower", ServeDir::new(path))
+        .route("/{*}", get(index_handler))
         .with_state(Arc::new(state));
     let listenner = tokio::net::TcpListener::bind(addr).await?;
     axum::serve(listenner, router).await?;
