@@ -45,3 +45,13 @@ cargo add ed25519_dalek
 
 cargo add ed25519_dalek --features rand_core
 ```
+
+## Http
+
+```bash
+cargo add tokio --features rt --features rt-multi-thread --features macros --features net --features fs
+
+cargo add tracing-subscriber --features env-filter
+
+cargo add axum --features http2 --features query --features tracing
+```

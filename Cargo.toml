@@ -18,3 +18,7 @@ rand_core = "0.6"
 base64 = "0.22.1"
 blake3 = "1.8.2"
 ed25519-dalek = { version = "2.0", features = ["rand_core"] }
+tokio = { version = "1.45.0", features = ["rt", "rt-multi-thread", "macros", "net", "fs"] }
+tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
+axum = { version = "0.8.4", features = ["http2", "query", "tracing"] }
+log = "0.4.27"

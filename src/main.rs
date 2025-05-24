@@ -2,6 +2,7 @@ mod base64;
 mod com;
 mod csv;
 mod genpass;
+mod httpserve;
 mod text;
 mod utils;
 
@@ -9,13 +10,16 @@ use crate::base64::{Base64Opt, decode_process, encode_process};
 use crate::com::{Options, SubCommand};
 use crate::csv::csv_process;
 use crate::genpass::genpass_process;
+use crate::httpserve::{HttpOpt, http_serve_process};
 use crate::text::{
     TextOpt, TextSignFormat, text_generate_process, text_sign_process, text_verify_process,
 };
 use clap::Parser;
 use std::fs;
 
-fn main() -> anyhow::Result<()> {
+#[tokio::main]
+async fn main() -> anyhow::Result<()> {
+    tracing_subscriber::fmt::init();
     // 解析命令行参数
     let option = Options::parse();
     // 匹配命令行参数中的子命令
@@ -75,6 +79,11 @@ fn main() -> anyhow::Result<()> {
                         fs::write(name.join("ed25519.pk"), &key[1])?;
                     }
                 }
+            }
+        },
+        SubCommand::Http(http_option) => match http_option {
+            HttpOpt::Serve(option) => {
+                http_serve_process(option.dir, option.port).await?;
             }
         },
     }

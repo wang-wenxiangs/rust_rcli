@@ -2,6 +2,7 @@ mod base64;
 mod com;
 mod csv;
 mod genpass;
+mod httpserve;
 mod text;
 mod utils;
 
@@ -11,6 +12,7 @@ pub use com::{
 };
 pub use csv::{CsvOpt, OutputFormat, csv_process};
 pub use genpass::{GenPassOpt, genpass_process};
+pub use httpserve::{HttpOpt, http_serve_process};
 pub use text::{
     TextOpt, TextSignFormat, text_generate_process, text_sign_process, text_verify_process,
 };

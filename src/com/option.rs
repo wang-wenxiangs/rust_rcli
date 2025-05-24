@@ -1,6 +1,7 @@
 use crate::base64::Base64Opt;
 use crate::csv::CsvOpt;
 use crate::genpass::GenPassOpt;
+use crate::httpserve::HttpOpt;
 use crate::text::TextOpt;
 use clap::Parser;
 
@@ -24,4 +25,7 @@ pub enum SubCommand {
 
     #[command(subcommand)]
     Text(TextOpt),
+
+    #[command(subcommand)]
+    Http(HttpOpt),
 }
