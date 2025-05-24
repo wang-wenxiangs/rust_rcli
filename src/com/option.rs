@@ -5,6 +5,11 @@ use crate::httpserve::HttpOpt;
 use crate::text::TextOpt;
 use clap::Parser;
 
+#[allow(async_fn_in_trait)]
+pub trait CmdExecutor {
+    async fn execute(self) -> anyhow::Result<()>;
+}
+
 #[derive(Debug, Parser)]
 #[command(name = "rust_rcli", author, version, about, long_about = None)]
 pub struct Options {
@@ -28,4 +33,16 @@ pub enum SubCommand {
 
     #[command(subcommand)]
     Http(HttpOpt),
+}
+
+impl CmdExecutor for SubCommand {
+    async fn execute(self) -> anyhow::Result<()> {
+        match self {
+            SubCommand::Csv(opt) => opt.execute().await,
+            SubCommand::GenPass(opt) => opt.execute().await,
+            SubCommand::Base64(opt) => opt.execute().await,
+            SubCommand::Text(opt) => opt.execute().await,
+            SubCommand::Http(opt) => opt.execute().await,
+        }
+    }
 }

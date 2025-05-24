@@ -1,4 +1,5 @@
-use crate::com::{input_exists, parser_base64_format};
+use crate::base64::{decode_process, encode_process};
+use crate::com::{CmdExecutor, input_exists, parser_base64_format};
 use clap::Parser;
 use std::fmt::{Display, Formatter};
 use std::str::FromStr;
@@ -12,6 +13,15 @@ pub enum Base64Opt {
     Decode(Base64DecodeOpt),
 }
 
+impl CmdExecutor for Base64Opt {
+    async fn execute(self) -> anyhow::Result<()> {
+        match self {
+            Base64Opt::Encode(opt) => opt.execute().await,
+            Base64Opt::Decode(opt) => opt.execute().await,
+        }
+    }
+}
+
 #[derive(Debug, Parser)]
 pub struct Base64EncodeOpt {
     #[arg(short, long, value_parser = input_exists, default_value = "-")]
@@ -21,6 +31,14 @@ pub struct Base64EncodeOpt {
     pub format: Base64Format,
 }
 
+impl CmdExecutor for Base64EncodeOpt {
+    async fn execute(self) -> anyhow::Result<()> {
+        let encode = encode_process(&self.input, self.format)?;
+        println!("{}", encode);
+        Ok(())
+    }
+}
+
 #[derive(Debug, Parser)]
 pub struct Base64DecodeOpt {
     #[arg(short, long, value_parser = input_exists, default_value = "-")]
@@ -28,6 +46,14 @@ pub struct Base64DecodeOpt {
 
     #[arg(long, value_parser = parser_base64_format, default_value = "standard")]
     pub format: Base64Format,
+}
+
+impl CmdExecutor for Base64DecodeOpt {
+    async fn execute(self) -> anyhow::Result<()> {
+        let decode = decode_process(&self.input, self.format)?;
+        println!("{}", decode);
+        Ok(())
+    }
 }
 
 #[derive(Debug, Parser, Clone, Copy)]

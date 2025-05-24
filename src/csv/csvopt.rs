@@ -1,4 +1,5 @@
-use crate::com::{input_exists, parser_format};
+use crate::com::{CmdExecutor, input_exists, parser_format};
+use crate::csv::csv_process;
 use clap::Parser;
 use std::fmt::{Display, Formatter};
 use std::str::FromStr;
@@ -19,6 +20,17 @@ pub struct CsvOpt {
 
     #[arg(long, value_parser = parser_format, default_value = "json")]
     pub format: OutputFormat,
+}
+
+impl CmdExecutor for CsvOpt {
+    async fn execute(self) -> anyhow::Result<()> {
+        let output = if let Some(output) = self.output {
+            output
+        } else {
+            format!("output : {}", self.format)
+        };
+        csv_process(&self.input, output, self.format)
+    }
 }
 
 impl FromStr for OutputFormat {

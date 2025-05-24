@@ -18,14 +18,14 @@ pub async fn http_serve_process(path: PathBuf, port: u16) -> anyhow::Result<()> 
     let state = HttpServeState { path: path.clone() };
     let router = Router::new()
         .nest_service("/tower", ServeDir::new(path))
-        .route("/{*}", get(index_handler))
+        .route("/{*}", get(file_handler))
         .with_state(Arc::new(state));
     let listenner = tokio::net::TcpListener::bind(addr).await?;
     axum::serve(listenner, router).await?;
     Ok(())
 }
 
-async fn index_handler(
+async fn file_handler(
     State(state): State<Arc<HttpServeState>>,
     Path(path): Path<String>,
 ) -> (StatusCode, String) {
